@@ -1,0 +1,34 @@
+---
+title: "Day 5 Spatial Intro"
+author: "Chen Xing"
+date: "9/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(sf)
+library(tmap)
+```
+
+
+### Read in ecoregion data
+
+```{r}
+
+ca_eco <- read_sf(dsn = here("data","ca_ecoregions"), layer = "ca_eco") %>% 
+  select(US_L3NAME) %>% 
+  rename(region = US_L3NAME) %>% 
+  st_simplify(dTolerance = 1000)
+
+plot(ca_eco)
+
+ggplot(data = ca_eco) + 
+  geom_sf(aes(fill = region))
+
+ca_eco <- ca_eco %>% 
+  st_transform(crs = 4326)
+```
+
